@@ -1,7 +1,7 @@
 local Enforcer = Enforcer
 local detours_library = Enforcer.Detours
 
--- Converts something like e:applyForce(v) to applyForce(e:v)
+-- Converts something like e:applyForce(v) to applyForce(e:v), which is internally how E2 function signatures are stored
 local function E2HelperSignatureToBaseSignature(helper_sig)
     local name = ""
     local args = {}

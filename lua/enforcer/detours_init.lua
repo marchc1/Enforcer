@@ -44,7 +44,12 @@ local function __detourcall(self, ...)
 
     for _, v in pairs(detours) do
         if v.post then
-            v.post(unpack(ret))
+            local rets = {v.post(unpack(ret))}
+            if v.modifying then
+                for k, v2 in ipairs(rets) do
+                    ret[k] = v2
+                end
+            end
         end
     end
 
@@ -103,12 +108,12 @@ end
 
 -- The default of a detour, when a function is provided to AddDetour methods, is to be a pre-executing blocking detour, since this is the most typical behavior needed.
 
-function detours_library.DetourObject(pre, post, blocking, modifiying)
+function detours_library.DetourObject(pre, post, blocking, modifying)
     local obj = {}
     obj.pre = pre
     obj.post = post
     obj.blocking = (blocking == nil and true or blocking)
-    obj.modifying = (modifiying == nil and false or modifiying)
+    obj.modifying = (modifying == nil and false or modifying)
     return obj
 end
 
