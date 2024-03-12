@@ -22,7 +22,7 @@ local function __detourcall(self, ...)
         if v.pre then
             local continues = {v.pre(...)}
 
-            if continues[1] == false and v.blocking then
+            if continues[1] == false and v.blocking == true then
                 local ret = {}
 
                 for i = 2, #continues do

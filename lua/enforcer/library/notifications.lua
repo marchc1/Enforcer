@@ -9,12 +9,14 @@ if SERVER then
 end
 
 function Enforcer.Notify(message, time, players)
+    time = time or 5
     if CLIENT then
         local uuid = "enforcernotif_" .. SysTime()
         notification.AddProgress(uuid, "Enforcer: " .. message)
         timer.Simple(time, function()
         	notification.Kill(uuid)
         end)
+        surface.PlaySound("common/warning.wav")
     else
         net.Start("enforcer.sendnotification")
         net.WriteString(message)
