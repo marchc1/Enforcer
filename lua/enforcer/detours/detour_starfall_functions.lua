@@ -21,7 +21,7 @@ compatibility.WaitForAddon("Starfall", function()
             local instanceMethods = instance.Types[type_name].Methods
             for method_name, detours in pairs(methods) do
                 for detour_name, detour in pairs(detours) do
-                    instanceMethods[method_name] = detours_library.AddDetour(instanceMethods[method_name], detour_name, detour)
+                    instanceMethods[method_name] = detours_library.AddDetour(instanceMethods[method_name], detour_name, detour, instance)
                 end
             end
         end
@@ -50,7 +50,7 @@ compatibility.WaitForAddon("Starfall", function()
         -- live patch all current starfalls
         for instance, _ in pairs(SF.allInstances) do
             local methods = instance.Types[type_name].Methods
-            methods[function_name] = detours_library.AddDetour(methods[function_name], detour_uniquename, detour)
+            methods[function_name] = detours_library.AddDetour(methods[function_name], detour_uniquename, detour, instance)
         end
     end
 

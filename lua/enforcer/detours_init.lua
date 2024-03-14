@@ -17,10 +17,22 @@ local function __detourcall(self, ...)
     end
 
     local packed = {...}
-
     for _, v in pairs(detours) do
         if v.pre then
-            local continues = {v.pre(...)}
+            local final
+            if v.add then
+                final = {}
+                for _, v in ipairs(v.add) do
+                    final[#final + 1] = v
+                end
+                for _, v in ipairs(packed) do
+                    final[#final + 1] = v
+                end
+            else
+                final = packed
+            end
+
+            local continues = {v.pre(unpack(final))}
 
             if continues[1] == false and v.blocking == true then
                 local ret = {}
@@ -125,11 +137,12 @@ end
 
 -- Under the hood, everything uses this detouring system. It wraps the function and returns the new function to take its place.
 -- Note: the code is smart enough to recognize when an already-detoured function is being detoured again, so just do original = adddetour(original, etc...)
+-- ... are arguments passed on, ie. Starfall instance
 
-function detours_library.AddDetour(func, unique_name, detour)
+function detours_library.AddDetour(func, unique_name, detour, ...)
     detours_library.ConfirmIfDetourable(func)
     detour = detours_library.CheckDetour(detour)
-
+    detour.add = {...}
     local detour_storage = func2detour[func]
     local returning_function = nil
     if detour_storage == nil then

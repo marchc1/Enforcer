@@ -6,5 +6,6 @@ local incSH = Enforcer.incSH
 Enforcer.Library.Stopwatch = incSH("library/stopwatch.lua")
 Enforcer.Library.Queue = incSH("library/queue.lua")
 
+incSH("library/timers.lua")
 incSH("library/notifications.lua")
 incSH("library/compatibility.lua")
